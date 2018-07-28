@@ -15,6 +15,9 @@ RUN apt-get install -y ros-$ROS_DISTRO-dbw-mkz
 RUN apt-get upgrade -y
 # end installing Dataspeed DBW
 
+# jpeg decoder
+RUN apt-get install libjpeg-dev
+
 # install python packages
 RUN apt-get install -y python-pip
 COPY requirements.txt ./requirements.txt
