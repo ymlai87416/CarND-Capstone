@@ -93,6 +93,11 @@ class Bridge(object):
 
     def create_twist(self, velocity, angular):
         tw = TwistStamped()
+
+        tw.header = Header()
+        tw.header.stamp = rospy.Time.now()
+        tw.header.frame_id = '/world'
+
         tw.twist.linear.x = velocity
         tw.twist.angular.z = angular
         return tw

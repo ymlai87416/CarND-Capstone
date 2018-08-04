@@ -10,11 +10,14 @@
 
 Presented by
 
-* Muhammand Hassan (Project leader)
-* Lai Yiu Ming, Tom
-* Emre Sezginalp
-* Damain
-* Marvin
+Project leader:
+* Muhammand Hassan - UTC+1 (Berlin)
+
+Members:
+* Lai Yiu Ming, Tom - UTC+8 (HK)
+* Emre Sezginalp  - UTC+2 (Prague)
+* Damain - UTC+1 
+* Marvin - UTC+1 (Berlin)
 
 ## Project background
 For this project, you'll be writing ROS nodes to implement core functionality of the autonomous vehicle system,
@@ -54,6 +57,12 @@ This project use Docker to develop and hence it is recommended to run this proje
 
     ```
     docker run -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
+    ```
+    To enable X-display
+    
+    ```
+    sudo xhost +local:docker
+    sudo docker run -p 4567:4567 -v $PWD:/capstone -e DISPLAY=$DISPLAY -v /tmp/log:/root/.ros/ -v /tmp/.X11-unix:/tmp/.X11-unix --rm -it capstone
     ```
 
 4. Run ROS command to kick start the program

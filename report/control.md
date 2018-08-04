@@ -3,6 +3,7 @@
 [//]: # (Image References)
 
 [image1]: ../imgs/decelerate_graph.png "declerate"
+[image2]: ../imgs/steering_control.png "steering control"
 
 ## Waypoint file structure
 
@@ -64,7 +65,7 @@ Twist controller takes the the current velocity, proposed linear and angular vel
 
 Throttle is controlled by a PID controller, for implementation detail, please refer to `src/twist/twist_controller/pid.py`
 
-Steering is controlled by a yaw controller, and the implementation is at `src/twist/twist_controller/yaw_controller.py`
+Steering is controlled by a yaw controller and a PID controller, and the implementation is at `src/twist/twist_controller/yaw_controller.py`
 
 The yaw controller performs the following
 * Find out the angular_velocity<sub>current</sub> = angular_velocity<sub>propose</sub> / linear_velocity<sub>propose</sub> * 
@@ -80,3 +81,13 @@ Brake is controlled by a the logic in `src/twist/twist_controller.py` line 65-71
 the brake accordingly.
 
 * Warn: break_deadband is not used.
+
+### Tuning throttle PID controller
+
+
+### Tuning steering PID controller
+
+Although `yaw_controller` calculate an angle base on sensor data and waypoints, sometimes it does not follow the track
+perfectly. To  
+
+![alt text][image2]
