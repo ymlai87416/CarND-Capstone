@@ -13,14 +13,12 @@ There are 2 waypoint files to guide the car to drive around those 2 simulations 
 
 Here is the file structure 
 
-    ```
     912.781,1128.67,0.0,0
     913.131,1128.67,0.0,0.233704
     913.375,1128.68,0.0,0.452972
     913.885,1128.68,0.0,0.426353
     914.288,1128.68,0.0,0.433952
     ......
-    ```
     
 The first column represents x coordinate, and the second column represent the y coordinate, while the
 third column represent the z coordinate (upward).
@@ -71,7 +69,7 @@ The yaw controller performs the following
 * Find out the angular_velocity<sub>current</sub> = angular_velocity<sub>propose</sub> / linear_velocity<sub>propose</sub> * 
 linear_velocity<sub>current</sub>
 * Check if the any violation against max lateral acceleration
-* Check if there are any violation against the limit of steering angle. (around +/- 30 degree in normal car)
+* Check if there are any violation against the limit of steering angle. (around +/- 8 in this project)
 * Finally, it return an angle in rad for steering.
 
 Brake is controlled by a the logic in `src/twist/twist_controller.py` line 65-71
@@ -91,3 +89,4 @@ Although `yaw_controller` calculate an angle base on sensor data and waypoints, 
 perfectly. To  
 
 ![alt text][image2]
+
