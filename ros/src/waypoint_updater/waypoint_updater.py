@@ -26,6 +26,7 @@ TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 
 LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
 MAX_DECEL = 5
+CTE_WPS = 5
 
 class WaypointUpdater(object):
     def __init__(self):
@@ -44,6 +45,7 @@ class WaypointUpdater(object):
         rospy.Subscriber('/traffic_waypoint', Int32, self.traffic_cb)
 
         self.final_waypoints_pub = rospy.Publisher('final_waypoints', Lane, queue_size=1)
+        self.cte_pub = rospy.Publisher('/cte', Int32, queue_size=1)
 
         # TODO: Add other member variables you need below
 
@@ -55,6 +57,8 @@ class WaypointUpdater(object):
             if self.pose and self.base_waypoints and self.waypoint_tree:
                 # Get closest waypoint
                 closest_waypoint_idx = self.get_closest_waypoint_idx()
+
+                self.publish_cross_track_error(closest_waypoint_idx)
                 self.publish_waypoints(closest_waypoint_idx)
             rate.sleep()
 
@@ -84,13 +88,13 @@ class WaypointUpdater(object):
         # lane = Lane()
         # lane.header = self.base_waypoints.header
         # lane.waypoints = self.base_waypoints.waypoints[closest_idx:closest_idx+LOOKAHEAD_WPS]
-        final_lane = self.generate_lane()
+        final_lane = self.generate_lane(closest_idx)
         self.final_waypoints_pub.publish(final_lane)
 
-    def generate_lane(self):
+    def generate_lane(self, closest_idx):
         lane = Lane()
 
-        closest_idx = self.get_closest_waypoint_idx()
+        #closest_idx = self.get_closest_waypoint_idx()
         farthest_idx = closest_idx + LOOKAHEAD_WPS
         base_waypoints = self.base_waypoints.waypoints[closest_idx: farthest_idx]
 
@@ -149,6 +153,50 @@ class WaypointUpdater(object):
             wp1 = i
         return dist
 
+    def publish_cross_track_error(self, closest_idx):
+        cte = self.calculate_cross_track_error(closest_idx)
+        self.cte_pub.publish(cte)
+
+    def calculate_cross_track_error(self, closest_idx):
+
+        origin = self.base_waypoints.waypoints[closest_idx].pose.pose.position
+        start_idx = max(closest_idx-CTE_WPS, 0)
+        end_idx = min(closest_idx+CTE_WPS, len(self.base_waypoints.waypoints))
+
+        waypoints_matrix = list(map(lambda waypoint: [waypoint.pose.pose.position.x, waypoint.pose.pose.position.y], self.base_waypoints.waypoints[start_idx: end_idx]))
+
+        # Convert the coordinates [x,y] in the world view to the car's coordinate
+
+        # Shift the points to the origin
+        shifted_matrix = waypoints_matrix - np.array([origin.x, origin.y])
+
+        # Derive an angle by which to rotate the points
+
+        if len(shifted_matrix) > CTE_WPS:
+            offset = len(shifted_matrix)-1
+
+            angle = np.arctan2(shifted_matrix[offset, 1], shifted_matrix[offset, 0])
+            rotation_matrix = np.array([
+                [np.cos(angle), -np.sin(angle)],
+                [np.sin(angle), np.cos(angle)]
+            ])
+
+            rotated_matrix = np.dot(shifted_matrix, rotation_matrix)
+
+            # Fit a 2 degree polynomial to the waypoints
+            degree = 3
+            coefficients = np.polyfit(rotated_matrix[:, 0], rotated_matrix[:, 1], degree)
+
+            # Transform the current pose of the car to be in the car's coordinate system
+            shifted_pose = np.array([self.pose.pose.position.x - origin.x, self.pose.pose.position.y - origin.y])
+            rotated_pose = np.dot(shifted_pose, rotation_matrix)
+
+            expected_y_value = np.polyval(coefficients, rotated_pose[0])
+            actual_y_value = rotated_pose[1]
+
+            return expected_y_value - actual_y_value
+        else:
+            return 0
 
 if __name__ == '__main__':
     try:
