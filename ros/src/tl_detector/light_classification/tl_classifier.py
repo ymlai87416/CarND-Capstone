@@ -2,17 +2,18 @@ from styx_msgs.msg import TrafficLight
 from yolo3.yolo import YOLO
 import numpy as np
 from PIL import Image
+from ssd_inception.model import Model
 
 class TLClassifier(object):
     def __init__(self, is_site, configuration):
         #TODO load classifier
         self.is_site = is_site
         if is_site:
-            self.yolo = YOLO()
+            self.model = Model(model_path=configuration["model_path"])
         else:
-            #self.yolo = YOLO(model_path=configuration["yolo_model"], anchors_path=configuration["yolo_anchor"],
-            #                 classes_path=configuration["yolo_classes"])
-            self.yolo = YOLO()
+            #self.yolo = YOLO()
+            self.yolo = YOLO(model_path=configuration["model_path"], anchors_path=configuration["model_anchor"],
+                             classes_path=configuration["model_classes"])
             self.traffic_light_classes = 9  # TODO: hard code
 
     def get_classification(self, image):
@@ -31,7 +32,7 @@ class TLClassifier(object):
             image_data = np.asarray(image)
 
             if self.is_site:
-                return TrafficLight.UNKNOWN
+                return self.model.detect_traffic_light(image)
             else:
                 pil_image = Image.fromarray(image_data)
                 # pil_image.save('/capstone/ros/test.png')
