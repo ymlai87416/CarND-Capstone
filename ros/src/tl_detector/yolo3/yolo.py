@@ -18,7 +18,6 @@ from PIL import Image, ImageFont, ImageDraw
 from model import yolo_eval, yolo_body, tiny_yolo_body
 from utils import letterbox_image
 import os
-from skimage.io import imsave
 
 class YOLO(object):
     _defaults = {
@@ -102,7 +101,6 @@ class YOLO(object):
         return boxes, scores, classes
 
     def detect_image(self, image):
-        image.save('/capstone/ros/test2.png')
         if self.model_image_size != (None, None):
             assert self.model_image_size[0]%32 == 0, 'Multiples of 32 required'
             assert self.model_image_size[1]%32 == 0, 'Multiples of 32 required'

@@ -31,7 +31,6 @@ class Model(object):
         (boxes, scores, classes, num) = self.session.run([self.detect_boxes, self.detect_scores, self.detect_classes, self.num_detections],
                                                  feed_dict={self.image_tensor: image_np_expanded})
 
-        #print("DEBUG", boxes, scores, classes, num)
         num = int(num)
 
         detected_lights = []
@@ -48,11 +47,6 @@ class Model(object):
                     detected_light = TrafficLight.UNKNOWN
 
             detected_lights.append(detected_light)
-
-        #print("DEBUG: Traffic Classifier results:\n")
-        #print("classes")
-        #print("scores")
-        #print("DEBUG: ", detected_lights)
 
         # TODO: make sure the enumeration used in models are the same as in styx_msgs/TrafficLight
         if len(detected_lights) > 0:

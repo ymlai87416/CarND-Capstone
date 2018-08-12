@@ -54,7 +54,6 @@ class TLClassifier(object):
                         corp_traffic_light = image_data[top:bottom, left:right, :]
                         detected_states.append(self.detect_traffic_light_state(corp_traffic_light))
 
-                print('DEBUG: Detected states are: ', detected_states)
                 if len(detected_states) > 0:
                     (_, idx, counts) = np.unique(detected_states, return_index=True, return_counts=True)
                     index = idx[np.argmax(counts)]

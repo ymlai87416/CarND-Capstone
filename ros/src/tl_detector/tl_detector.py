@@ -178,10 +178,11 @@ class TLDetector(object):
         # List of positions that correspond to the line to stop in front of for a given intersection
         stop_line_positions = self.config['stop_line_positions']
 
-        # TODO: just for testing
+        # TODO: just for testing, remove it
         if self.config['is_site']:
             state = self.get_light_state(closest_light)
             rospy.logwarn("Nearest traffic light state: {0}".format(state))
+        # TODO: end of testing 
 
         if self.pose and self.waypoints and self.waypoints_tree:
             car_wp_idx = self.get_closest_waypoint(self.pose.pose.position.x, self.pose.pose.position.y)
