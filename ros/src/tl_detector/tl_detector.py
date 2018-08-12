@@ -11,6 +11,8 @@ import tf
 import cv2
 import yaml
 from scipy.spatial import KDTree
+import numpy as np
+import PIL
 
 STATE_COUNT_THRESHOLD = 3
 
@@ -25,6 +27,25 @@ class TLDetector(object):
         self.waypoints_2d = None
         self.waypoints_tree = None
 
+        config_string = rospy.get_param("/traffic_light_config")
+        self.config = yaml.load(config_string)
+
+        self.detector_config = {}
+        self.detector_config["yolo_model"] = rospy.get_param("yolo_model")
+        self.detector_config["yolo_anchor"] = rospy.get_param("yolo_anchor")
+        self.detector_config["yolo_classes"] = rospy.get_param("yolo_classes")
+
+        self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
+
+        self.bridge = CvBridge()
+        self.light_classifier = TLClassifier(self.config['is_site'], self.detector_config)
+        self.listener = tf.TransformListener()
+
+        self.state = TrafficLight.UNKNOWN
+        self.last_state = TrafficLight.UNKNOWN
+        self.last_wp = -1
+        self.state_count = 0
+
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
         sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
 
@@ -37,20 +58,6 @@ class TLDetector(object):
         '''
         sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
         sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
-
-        config_string = rospy.get_param("/traffic_light_config")
-        self.config = yaml.load(config_string)
-
-        self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
-
-        self.bridge = CvBridge()
-        self.light_classifier = TLClassifier()
-        self.listener = tf.TransformListener()
-
-        self.state = TrafficLight.UNKNOWN
-        self.last_state = TrafficLight.UNKNOWN
-        self.last_wp = -1
-        self.state_count = 0
 
         rospy.spin()
 
@@ -139,16 +146,20 @@ class TLDetector(object):
 
         """
 
-        return light.state
-
+        #return light.state
         if(not self.has_image):
             self.prev_light_loc = None
-            return False
+            return TrafficLight.UNKNOWN
 
         cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
-
+        cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
+        #cv_image = cv_image.reshape(self.config['camera_info']['image_height'], self.config['camera_info']['image_width'], 3)
+        #pil_image = PIL.Image.fromarray(np.asarray(cv_image))
+        #pil_image.save('/capstone/ros/test.png')
         #Get classification
-        return self.light_classifier.get_classification(cv_image)
+        result = self.light_classifier.get_classification(cv_image)
+        rospy.logwarn("get_light_state: " + str(result))
+        return result
 
     def process_traffic_lights(self):
         """Finds closest visible traffic light, if one exists, and determines its
@@ -185,7 +196,7 @@ class TLDetector(object):
             # rospy.logwarn("Nearest traffic light state: {0}".format(state))
             return line_wp_idx, state
 
-        self.waypoints = None
+        #self.waypoints = None
         rospy.logwarn("Nearest traffic light state: UNKNOWN")
         return -1, TrafficLight.UNKNOWN
 

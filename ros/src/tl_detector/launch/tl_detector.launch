@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <node pkg="tl_detector" type="tl_detector.py" name="tl_detector" output="screen" cwd="node"/>
+    <param name="yolo_model" value="$(find styx)../../../model/yolo_v3_coco/yolo.h5" />
+    <param name="yolo_classes" value="$(find styx)../../../model/yolo_v3_coco/coco_classes.txt" />
+    <param name="yolo_anchor" value="$(find styx)../../../model/yolo_v3_coco/yolo_anchors.txt" />
 </launch>

@@ -1,0 +1,28 @@
+-- To attach to an existing docker instance, run
+sudo docker container list
+
+-- To allow docker to
+sudo xhost +local:docker
+
+sudo docker run -p 4567:4567 -v $PWD:/capstone -e DISPLAY=$DISPLAY -v /tmp/log:/root/.ros/ -v /tmp/.X11-unix:/tmp/.X11-unix --rm -it capstone
+
+sudo docker exec -it 24b18743adeb bash
+
+sudo apt-get install ros-kinetic-rqt ros-kinetic-rqt-common-plugins
+
+-- to fix the jpeg problem
+
+-- plot against velocity
+
+rqt_plot /current_velocity/twist/linear/x &
+rqt_plot /vehicle/throttle_report/data &
+
+-- plot against steering
+
+rqt_plot /cte &
+rqt_plot /vehicle/steering_cmd/steering_wheel_angle_cmd &
+
+-- to record a rosbag, e.g. to extract simulator images
+rosbag record image_color
+
+-- to extract images from the rosbag

@@ -22,6 +22,8 @@ Please use **one** of the two installation options, either native **or** docker 
 ### Docker Installation
 [Install Docker](https://docs.docker.com/engine/installation/)
 
+[Install Nvidia-Docker](https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0))
+
 Build the docker container
 ```bash
 docker build . -t capstone
@@ -29,13 +31,13 @@ docker build . -t capstone
 
 Run the docker file
 ```bash
-docker run -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
+docker run --runtime=nvidia -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
 ```
 
 For enable X-display
 ```bash
 sudo xhost +local:docker
-sudo docker run -p 4567:4567 -v $PWD:/capstone -e DISPLAY=$DISPLAY -v /tmp/log:/root/.ros/ -v /tmp/.X11-unix:/tmp/.X11-unix --rm -it capstone
+sudo docker run --runtime=nvidia -p 4567:4567 -v $PWD:/capstone -e DISPLAY=$DISPLAY -v /tmp/log:/root/.ros/ -v /tmp/.X11-unix:/tmp/.X11-unix --rm -it capstone
 ```
 
 ### Port Forwarding
