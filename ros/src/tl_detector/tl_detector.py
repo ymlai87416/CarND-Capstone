@@ -57,7 +57,7 @@ class TLDetector(object):
         rely on the position of the light and the camera image to predict it.
         '''
         sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
-        sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
+        sub6 = rospy.Subscriber('/image_color', Image, self.image_cb, queue_size=1)
 
         rospy.spin()
 
@@ -154,7 +154,6 @@ class TLDetector(object):
         cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
 
         if self.config['is_site']:
-            #cv_image = cv2.resize(cv_image, (400, 400))             # Real detector use BGR format
             pass
         else:
             cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)    # YOLO detector use RGB format
@@ -182,7 +181,7 @@ class TLDetector(object):
         if self.config['is_site']:
             state = self.get_light_state(closest_light)
             rospy.logwarn("Nearest traffic light state: {0}".format(state))
-        # TODO: end of testing 
+        # TODO: end of testing
 
         if self.pose and self.waypoints and self.waypoints_tree:
             car_wp_idx = self.get_closest_waypoint(self.pose.pose.position.x, self.pose.pose.position.y)
