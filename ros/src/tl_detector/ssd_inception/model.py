@@ -7,8 +7,6 @@ class Model(object):
         print('debug', model_path)
         self.model = self.load_graph(model_path)
 
-        #with self.model.as_default():
-            #with self.session as sess:
         tf_config = tf.ConfigProto(device_count={'gpu': 0}, log_device_placement=True)
         tf_config.gpu_options.allow_growth = True
         with self.model.as_default():
@@ -38,9 +36,9 @@ class Model(object):
             detected_light = TrafficLight.UNKNOWN
             if scores[0][i] > 0.4:  # TODO: tune this threshold
                 if int(classes[0][i]) == 1:
-                    detected_light = TrafficLight.RED
-                elif int(classes[0][i]) == 2:
                     detected_light = TrafficLight.GREEN
+                elif int(classes[0][i]) == 2:
+                    detected_light = TrafficLight.RED
                 elif int(classes[0][i]) == 3:
                     detected_light = TrafficLight.YELLOW
                 else:
@@ -50,6 +48,7 @@ class Model(object):
 
         # TODO: make sure the enumeration used in models are the same as in styx_msgs/TrafficLight
         if len(detected_lights) > 0:
+            # print('debug: detected lights: ', detected_lights)
             return detected_lights[0]
         else:
             return TrafficLight.UNKNOWN

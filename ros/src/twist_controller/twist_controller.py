@@ -70,11 +70,11 @@ class Controller(object):
         self.last_time = current_time
 
         feedfoward_steering = self.yaw_controller.get_steering(linear_vel, angular_vel, current_vel)
-        # corrective_steering = self.steering_correct_controller.step(cte, sample_time)
+        corrective_steering = self.steering_correct_controller.step(cte*cte, sample_time)
 
-        # steering = feedfoward_steering + corrective_steering
-        # steering = min(self.max_steer_angle, max(-self.max_steer_angle, steering))
-        steering = self.steer_controller.step(feedfoward_steering, sample_time)
+        steering = feedfoward_steering + corrective_steering
+        steering = min(self.max_steer_angle, max(-self.max_steer_angle, steering))
+        #steering = self.steer_controller.step(feedfoward_steering, sample_time)
 
         vel_error = linear_vel - current_vel
         self.last_vel = current_vel

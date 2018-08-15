@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-from std_msgs.msg import Bool, Int32
+from std_msgs.msg import Bool, Int32, Float32
 from dbw_mkz_msgs.msg import ThrottleCmd, SteeringCmd, BrakeCmd, SteeringReport
 from geometry_msgs.msg import TwistStamped
 from styx_msgs.msg import Lane
@@ -74,7 +74,7 @@ class DBWNode(object):
         rospy.Subscriber('/current_velocity', TwistStamped, self.velocity_cb)
         rospy.Subscriber('/final_waypoints', Lane, self.final_waypoints_cb)
         rospy.Subscriber('/current_pose', PoseStamped, self.current_pose_cb)
-        rospy.Subscriber('/cte', Int32, self.cte_cb)
+        rospy.Subscriber('/cte', Float32, self.cte_cb)
 
         self.current_vel = None
         self.curr_ang_vel = None

@@ -26,4 +26,7 @@ rqt_plot /vehicle/steering_cmd/steering_wheel_angle_cmd &
 rosbag record image_color
 
 -- to extract images from the rosbag
+
+
+-- to create video from images
 ffmpeg -r 10 -i ./frame%06d.png -vcodec mpeg4 -b:v 2000k -y ssd_DamianF_v2_sim.mp4

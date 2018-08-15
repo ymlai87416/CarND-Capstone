@@ -3,7 +3,7 @@
 import rospy
 from geometry_msgs.msg import PoseStamped
 from styx_msgs.msg import Lane, Waypoint
-from std_msgs.msg import Int32
+from std_msgs.msg import Int32, Float32
 from scipy.spatial import KDTree
 import numpy as np
 
@@ -45,7 +45,7 @@ class WaypointUpdater(object):
         rospy.Subscriber('/traffic_waypoint', Int32, self.traffic_cb)
 
         self.final_waypoints_pub = rospy.Publisher('final_waypoints', Lane, queue_size=1)
-        self.cte_pub = rospy.Publisher('/cte', Int32, queue_size=1)
+        self.cte_pub = rospy.Publisher('/cte', Float32, queue_size=1)
 
         # TODO: Add other member variables you need below
 

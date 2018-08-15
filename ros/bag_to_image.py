@@ -32,7 +32,7 @@ def main():
     bridge = CvBridge()
     count = 0
     for topic, msg, t in bag.read_messages(topics=[args.image_topic]):
-        cv_img = bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
+        cv_img = bridge.imgmsg_to_cv2(msg, desired_encoding="rgb8")
 
         cv2.imwrite(os.path.join(args.output_dir, "frame%06i.png" % count), cv2.cvtColor(cv_img, cv2.COLOR_RGB2BGR) )
         print "Wrote image %i" % count
@@ -40,6 +40,7 @@ def main():
         count += 1
 
     bag.close()
+
 
     return
 
