@@ -11,21 +11,10 @@
 [image4]: ../imgs/waypoint-updater-ros-graph.png "waypoint updater node"
 [image5]: ../imgs/dbw-node-ros-graph.png "dbw node"
 
-
-## Overview
-
-Self driving car is a complex system and consist of the following important modules in order to drive properly.
-
-![alt text][image1]
-
-In this project, we are going to create a self-driving car which can move autonomously around a yard, and able to
-stop in-front of a red light.
-
-Here is the ROS code structure of this project
+This project is implemented in ROS (Robot operating system), and below graph should ROS nodes which make up of
+our project. In this section, we present each node in detail.
 
 ![alt text][image2]
-
-In the following, I introduce you those node in the graph and explain their functionality.
 
 ## Nodes
 
@@ -39,11 +28,13 @@ This package contains the traffic light detection node: `tl_detector.py`. This n
 `/image_color`, `/current_pose`, and `/base_waypoints` topics and publishes the locations to stop for red traffic 
 lights to the `/traffic_waypoint` topic.
 
+
 The `/current_pose` topic provides the vehicle's current position, and `/base_waypoints` provides a complete list of 
 waypoints the car will be following.
 
-You will build both a traffic light detection node and a traffic light classification node. Traffic light detection 
-should take place within tl_detector.py, whereas traffic light classification should take place within 
+
+This ROS node has a traffic light detection node and a traffic light classification node. Traffic light detection
+takes place within tl_detector.py, whereas traffic light classification takes place within
 `../tl_detector/light_classification_model/tl_classfier.py`.
 
 ![alt text][image3]
@@ -52,14 +43,13 @@ should take place within tl_detector.py, whereas traffic light classification sh
 
 A package which loads the static waypoint data and publishes to `/base_waypoints`.
 
-#### Waypoints file structure
-
+Please refer to [Control section](./control.md) for waypoint file format.
 
 ### Planning - Waypoint updater node (waypoint_updater)
 
 This package contains the waypoint updater node: `waypoint_updater.py`. The purpose of this node is to update the
-target velocity property of each waypoint based on traffic light and obstacle detection data. This node will 
-subscribe to the `/base_waypoints`, `/current_pose`, `/obstacle_waypoint`, and `/traffic_waypoint` topics, and 
+target velocity property of each waypoint based on traffic light and obstacle detection data. This node
+subscribes to the `/base_waypoints`, `/current_pose`, `/obstacle_waypoint`, and `/traffic_waypoint` topics, and
 publish a list of waypoints ahead of the car with target velocities to the `/final_waypoints` topic.
 
 ![alt text][image4]
@@ -93,7 +83,7 @@ Here is a list of messages used by the system
 | /current_pose         | geometry_msgs/PoseStamped | From car/simulator, represent the car current position and orientation          |
 | /current_velocity     | geometry_msgs/TwistStamped| From car/simulator, represent the car current velocity          |
 | /final_waypoints      | styx_msgs/Lane            | From waypoint updater node, consumed by waypoint follower to become steering angle, throttle and brake         |
-| /image_color          | sensor_msgs/Image         | From car/simulator, for perception module to identify traffic light and obstacle          |
+| /image_color OR /image_raw         | sensor_msgs/Image         | From car/simulator, for perception module to identify traffic light and obstacle          |
 | /obstacle_waypoints   | ???                       | From perception module, represent obstacle by coordinates          |
 | /traffic_waypoint     | std_msgs/Int32            | From perception module, represent traffic light by traffic light stop-lines and light signal          |
 | /twist_cmd            | geometry_msgs/TwistStamped| From waypoint follower node, consumed by DBW node to become steering angle, throttle and brake  |
@@ -104,6 +94,8 @@ Here is a list of messages used by the system
 
 
 ## Messages
+
+These are messages used in this project.
 
 #### dbw_mkz_msgs/BrakeCmd
 
