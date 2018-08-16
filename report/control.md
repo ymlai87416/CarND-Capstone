@@ -20,13 +20,13 @@ Here is the file structure
     914.288,1128.68,0.0,0.433952
     ......
     
-The first column represents x coordinate, and the second column represent the y coordinate, while the
-third column represent the z coordinate (upward).
-The final column represent the yaw angle when the car drives through this point.
+The first column is x coordinate, and the second column is the y coordinate, while the
+third column is the z coordinate (upward).
+The final column represents the yaw angle when the car drives through this point.
 
 ## Waypoint loader
 
-Waypoint loader reads the waypoint file and publish a route in form of a list of waypoints which decelerate and stop at the last waypoint.
+Waypoint loader reads the waypoint file and publishes a route in form of a list of waypoints which decelerate and stop at the last waypoint.
 
 ## Waypoint updater
 
@@ -48,7 +48,7 @@ To calculate linear velocity: it uses the linear velocity of the next waypoint
 
 To calculate angular velocity: 
 
-* Find a linear equation which extrapolate the previous waypoint to the next waypoint
+* Find a linear equation which extrapolates the previous waypoint to the next waypoint
 * Draw a circle around the current car position
 * Find intersection points of a circle and the linear equation
 * Set the target to the intersection point between the car and the next waypoint
@@ -59,7 +59,7 @@ For detail, please refer to `geometry_msgs::TwistStamped PurePursuit::go()` for 
 
 ## Twist controller
 
-Twist controller takes the the current velocity, proposed linear and angular velocity (from twist_cmd) to output
+Twist controller takes the current velocity, proposed linear and angular velocity (from twist_cmd) to output
 3 quantities: throttle, steering and brake.
 
 
@@ -71,20 +71,20 @@ Steering is controlled by a yaw controller and a PID controller, and the impleme
 The yaw controller performs the following
 * Find out the angular_velocity<sub>current</sub> = angular_velocity<sub>propose</sub> / linear_velocity<sub>propose</sub> * 
 linear_velocity<sub>current</sub>
-* Check if the any violation against max lateral acceleration
-* Check if there are any violation against the limit of steering angle. (around +/- 8 in this project)
-* Finally, it return an angle in rad for steering.
+* Check if any violation against max lateral acceleration
+* Check if there is any violation against the limit of steering angle. (around +/- 8 in this project)
+* Finally, it returns an angle in rad for steering.
 
-Brake is controlled by a the logic in `src/twist/twist_controller.py` line 85-91
+Brake is controlled by the logic in `src/twist/twist_controller.py` line 85-91
 
-* If the velocity is lower than 0.1ms<sup>-1</sup>, the car apply the brake at 700Nm too stop the car.
+* If the velocity is lower than 0.1ms<sup>-1</sup>, the car applies the brake at 700Nm too stop the car.
 * If the throttle is lower than 0.1 and e(t) of PID control is small, consider the car is decelerating and apply
 the brake accordingly.
 
 ### Throttle PID controller
 
-Throttle PID controller control the speed of the vehicle. It control acceleration and deceleration and does not
-need many parameters in order to work.
+Throttle PID controller controls the speed of the vehicle by throttle values.
+It is very simple and does not need many parameters in order to work.
 
 In this project, throttle PID controller has the following parameters
 * Kp = 0.3
@@ -94,16 +94,16 @@ In this project, throttle PID controller has the following parameters
 ### Steering PID controller
 
 Although `yaw_controller` calculates an angle base on sensor data and waypoints, sometimes it does not follow the track
-perfectly. To come up with a more accurate steering angle, we has integrated a PID controller and it works
+perfectly. To come up with a more accurate steering angle, we have integrated a PID controller and it works
 side by side with the `yaw_controller` like the following diagram. This PID controller consumes cross track
-error and produce a steering angle.
+error and outputs a steering angle.
 
 ![alt text][image2]
 
-The benefit of our design compare to yaw controller only solution is that our design is more tolerant to the change
+The benefit of our design compares to yaw controller only solution is that our design is more tolerant to the change
 of car parameters e.g. weight of the car.
 
 Our design is also better than a PID controller only solution because the yaw controller provides an approximated
-value which make the controller more responsive. It is crucial when the car does not have much space to maneuver
-and should be better in avoiding collision.
+value which makes the controller more responsive. It is crucial when the car does not have much space to maneuver
+and should be better at avoiding collisions.
 

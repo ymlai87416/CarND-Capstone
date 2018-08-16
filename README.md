@@ -44,8 +44,8 @@ Members:
 </table>
 
 ## Project background
-For this project, our team write ROS nodes to implement core functionality of the autonomous vehicle system,
-including traffic light detection, control, and waypoint following! We test our code using a simulator,
+For this project, our team writes ROS nodes to implement the core functionality of the autonomous vehicle system,
+including traffic light detection, control, and waypoint following! We test our code using a simulator
 and submit the project to Udacity to run it on Carla.
 
 The following is a system architecture diagram showing the ROS nodes and topics used in the project.
@@ -58,7 +58,7 @@ described briefly in the Code Structure section below, and more detail is provid
 
 ### Project directories overview
 
-In this project, there are multiple folders and serve difference purposes.
+In this project, there are multiple folders and serve different purposes.
 
 | Folder | Description |
 | :------------ | :----------- |
@@ -74,7 +74,7 @@ In this project, there are multiple folders and serve difference purposes.
 
 ### Project setup
 
-This project use Docker to develop and hence it is recommended to run this project inside a docker container.
+This project uses Docker to develop and hence it is recommended to run this project inside a Docker container.
 
 #### System requirement
 
@@ -131,12 +131,12 @@ This project use Docker to develop and hence it is recommended to run this proje
 The simulator (ROS integration simulator) can be downloaded at [here](https://github.com/udacity/self-driving-car-sim/releases),
 there are 2 maps available. `Highway` and `Test Lot`.
 
-Self driving car is a complex system and consist of the following important modules in order to drive properly.
+Self-driving car is a complex system and consist of the following important modules in order to drive properly.
 
 ![alt text][image1]
 
 In this project, we are going to create a self-driving car which is able to follow waypoints, and stop
- in-front of a red light.
+ in front of a red light.
 
 This project is implemented in ROS (Robot operating system). Please refer
 to [this link](./report/system_architecture.md) for details.
@@ -153,7 +153,7 @@ Please refer to [this link](./report/perception.md) for further information.
 
 ## Result
 
-This project compose of 3 parts: Running on the simulator, pre Carla testing on ROS bag and
+This project composes of 3 parts: Running on the simulator, pre Carla testing on ROS bag and
 testing on Carla.
 
 #### Running on the simulator
