@@ -158,13 +158,13 @@ testing on Carla.
 
 #### Running on the simulator
 
-[<img src="../imgs/result_highway_video.PNG">](https://youtu.be/K3YOUEuKAwQ)
+[<img src="https://github.com/ymlai87416/CarND-Capstone/blob/master/imgs/result_highway_video.PNG">](https://youtu.be/K3YOUEuKAwQ)
 
-[<img src="../imgs/result_testlot_video.PNG">](https://youtu.be/J22OQShw-7o)
+[<img src="https://github.com/ymlai87416/CarND-Capstone/blob/master/imgs/result_testlot_video.PNG">](https://youtu.be/J22OQShw-7o)
 
 #### Pre Carla testing on ROS bag
 
-[<img src="../imgs/result_rosbag_video.PNG">](https://youtu.be/lCfDJDUgrS8)
+[<img src="https://github.com/ymlai87416/CarND-Capstone/blob/master/imgs/result_rosbag_video.PNG">](https://youtu.be/lCfDJDUgrS8)
 
 #### Testing on Carla
 
