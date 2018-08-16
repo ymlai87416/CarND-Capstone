@@ -149,7 +149,7 @@ Please refer to [this link](./report/control.md) for further information.
 
 #### Traffic light detection
 
-Please refer to [this link](./report/preception.md) for further information.
+Please refer to [this link](./report/perception.md) for further information.
 
 ## Result
 

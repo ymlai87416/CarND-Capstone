@@ -18,7 +18,7 @@ point cloud message available from Carla.
 In this project, we drive a car in both a simulated and the real environment.
 
 ### Simulated environment
-In simulated environment, we choose to use a trained [YOLOv3 detection system](https://pjreddie.com/darknet/yolo/) [1]
+In simulated environment, we use a trained [YOLOv3 detection system](https://pjreddie.com/darknet/yolo/) [1]
 as the traffic light detector and obtains bounding boxes of traffic light (class 9). We looks for red, green
 and yellow pixels in the cropped images and conclude what is the traffic light state. YOLOv3 is reported to have 35 frames per seconds
 per second running on Titan X, but it is running at slower speed in this project
