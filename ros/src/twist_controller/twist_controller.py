@@ -20,9 +20,9 @@ class Controller(object):
         throttle_mn = 0.  # Minimum throttle value
         throttle_mx = 0.2  # Maximum throttle value
 
-        steering_kp = 0.4  # 0.15
-        steering_ki = 0 #0.003
-        steering_kd = 0.005
+        steering_kp = 0.3  # 0.15
+        steering_ki = 0 # 0.003
+        steering_kd = 0.005 # 0.005
 
         self.throttle_controller = PID(throttle_kp, throttle_ki, throttle_kd, throttle_mn, throttle_mx)
         self.steering_correct_controller = PID(steering_kp, steering_ki, steering_kd, -max_steer_angle, max_steer_angle)
