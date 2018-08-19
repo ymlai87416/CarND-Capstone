@@ -38,7 +38,7 @@ Members:
     <td>damfinn@gmail.com</td>
 </tr>
 <tr>
-    <td>Marvin</td>
+    <td>Marvin Rischbieter</td>
     <td>marv.ris@gmail.com</td>
 </tr>
 </table>
@@ -141,7 +141,7 @@ In this project, we are going to create a self-driving car which is able to foll
 This project is implemented in ROS (Robot operating system). Please refer
 to [this link](./report/system_architecture.md) for details.
 
-### Individual component walk-thought
+### Individual component walk through
 
 #### Speed and Steering
 
@@ -151,6 +151,26 @@ Please refer to [this link](./report/control.md) for further information.
 
 Please refer to [this link](./report/perception.md) for further information.
 
+#### Real world testing
+1. Download [training bag](https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/traffic_light_bag_file.zip) that was recorded on the Udacity self-driving car.
+
+2. Unzip the file
+    ```bash
+    unzip traffic_light_bag_file.zip
+    ```
+
+3. Play the bag file
+    ```bash
+    rosbag play -l traffic_light_bag_file/traffic_light_training.bag
+    ```
+4. Launch your project in site mode
+    ```bash
+    cd CarND-Capstone/ros
+    roslaunch launch/site.launch
+    ```
+
+5. Confirm that traffic light detection works on real life images
+
 ## Result
 
 This project composes of 3 parts: Running on the simulator, pre Carla testing on ROS bag and
@@ -158,13 +178,13 @@ testing on Carla.
 
 #### Running on the simulator
 
-[<img src="https://github.com/ymlai87416/CarND-Capstone/blob/master/imgs/result_highway_video.PNG">](https://youtu.be/K3YOUEuKAwQ)
+[<img src="https://github.com/ymlai87416/CarND-Capstone/blob/master/imgs/result_highway_video.PNG">](https://youtu.be/9b8NSd8rVPU)
 
-[<img src="https://github.com/ymlai87416/CarND-Capstone/blob/master/imgs/result_testlot_video.PNG">](https://youtu.be/J22OQShw-7o)
+[<img src="https://github.com/ymlai87416/CarND-Capstone/blob/master/imgs/result_testlot_video.PNG">](https://youtu.be/JuvvOXDO_Dk)
 
 #### Pre Carla testing on ROS bag
 
-[<img src="https://github.com/ymlai87416/CarND-Capstone/blob/master/imgs/result_rosbag_video.PNG">](https://youtu.be/lCfDJDUgrS8)
+[<img src="https://github.com/ymlai87416/CarND-Capstone/blob/master/imgs/result_rosbag_video.PNG">](https://youtu.be/Hv98eP3KxwA)
 
 #### Testing on Carla
 
