@@ -10,6 +10,7 @@
 [image6]: ./imgs/result_highway_video.PNG "result highway"
 [image7]: ./imgs/result_testlot_video.PNG "result testlot"
 [image8]: ./imgs/result_rosbag_video.PNG "rosbag testlot"
+[image9]: ./imgs/self_driving_stack.PNG "driving stack"
 
 Presented by
 
@@ -131,9 +132,13 @@ This project uses Docker to develop and hence it is recommended to run this proj
 The simulator (ROS integration simulator) can be downloaded at [here](https://github.com/udacity/self-driving-car-sim/releases),
 there are 2 maps available. `Highway` and `Test Lot`.
 
+![alt text][image1]
+
+### System overview
+
 Self-driving car is a complex system and consist of the following important modules in order to drive properly.
 
-![alt text][image1]
+![alt text][image9]
 
 In this project, we are going to create a self-driving car which is able to follow waypoints, and stop
  in front of a red light.
@@ -151,7 +156,7 @@ Please refer to [this link](./report/control.md) for further information.
 
 Please refer to [this link](./report/perception.md) for further information.
 
-#### Real world testing
+### Real world testing
 1. Download [training bag](https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/traffic_light_bag_file.zip) that was recorded on the Udacity self-driving car.
 
 2. Unzip the file
