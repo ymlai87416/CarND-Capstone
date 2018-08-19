@@ -126,6 +126,8 @@ class TLClassifier(object):
 
         blue_channel = image[:, :, 2]
 
+        light_threshold = red_channel.shape[0] * red_channel.shape[1] * 0.07 / 3
+
         # patitioning on r_binary
         r_binary = simple_thresh(red_channel, (196, 255))
         # plt.figure()
@@ -133,7 +135,7 @@ class TLClassifier(object):
         r_binary_1 = r_binary[0:int(rows / 3) - 1, :]
         r_binary_2 = r_binary[int(rows / 3):(2 * int(rows / 3)) - 1, :]
         r_binary_3 = r_binary[(2 * int(rows / 3)):rows - 1, :]
-        is_red = (r_binary_1.sum() > 2 * (r_binary_2.sum())) & (r_binary_1.sum() > 2 * (r_binary_3.sum()))
+        is_red = (r_binary_1.sum() > 2 * (r_binary_2.sum())) & (r_binary_1.sum() > 2 * (r_binary_3.sum())) & (r_binary_1.sum() > light_threshold)
 
         # (GREEN) patitioning on g_binary
         g_binary = simple_thresh(green_channel, (183, 255))
@@ -143,18 +145,18 @@ class TLClassifier(object):
         g_binary_2 = g_binary[int(rows / 3):(2 * int(rows / 3)) - 1, :]
         g_binary_3 = g_binary[(2 * int(rows / 3)):rows - 1, :]
 
-        is_green = (g_binary_3.sum() > 2 * (g_binary_2.sum())) & (g_binary_3.sum() > 2 * (g_binary_1.sum()))
+        is_green = (g_binary_3.sum() > 2 * (g_binary_2.sum())) & (g_binary_3.sum() > 2 * (g_binary_1.sum())) & (g_binary_3.sum() > light_threshold)
 
         # (YELLOW) partition on g_binary and b_binary
         g_binary = simple_thresh(green_channel, (146, 255))
         b_binary = simple_thresh(blue_channel, (143, 255))
-        combine = g_binary + b_binary
+        combine = np.logical_and(g_binary, b_binary)
 
         y_binary_1 = combine[0:int(rows / 3) - 1, :]
         y_binary_2 = combine[int(rows / 3):(2 * int(rows / 3)) - 1, :]
         y_binary_3 = combine[(2 * int(rows / 3)):rows - 1, :]
 
-        is_yellow = (y_binary_2.sum() > 2 * (y_binary_1.sum())) & (y_binary_2.sum() > 2 * (y_binary_3.sum()))
+        is_yellow = (y_binary_2.sum() > 2 * (y_binary_1.sum())) & (y_binary_2.sum() > 2 * (y_binary_3.sum())) & (y_binary_2.sum() > light_threshold)
 
         if is_red:
             return TrafficLight.RED
