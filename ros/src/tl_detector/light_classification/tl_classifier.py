@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 from ssd_inception.model import Model
 import cv2
+import rospy
 
 class TLClassifier(object):
     def __init__(self, is_site, configuration):
@@ -17,13 +18,18 @@ class TLClassifier(object):
                 self.model = YOLO(model_path=configuration["model_path"], anchors_path=configuration["model_anchor"],
                                   classes_path=configuration["model_classes"])
                 self.traffic_light_classes = 9  # TODO: hard code
+                self.model.detect_image(Image.new('RGB', (800, 600)))
             else:
                 self.model = Model(model_path=configuration["model_path"])
+                self.model.detect_traffic_light(np.zeros((800, 600, 3)))
 
         else:
             self.model = YOLO(model_path=configuration["model_path"], anchors_path=configuration["model_anchor"],
                              classes_path=configuration["model_classes"])
             self.traffic_light_classes = 9  # TODO: hard code
+            self.model.detect_image(Image.new('RGB', (800, 600)))
+
+        rospy.loginfo("Traffic light classifier: Initialization completed.")
 
     def get_classification(self, image):
         """Determines the color of the traffic light in the image

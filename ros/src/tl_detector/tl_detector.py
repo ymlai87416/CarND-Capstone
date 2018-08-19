@@ -210,7 +210,7 @@ class TLDetector(object):
 
         if closest_light:
             state = self.get_light_state(closest_light)
-            rospy.logwarn("Nearest traffic light state: {0}".format(light_state_to_str[state]))
+            rospy.loginfo("Nearest traffic light state: {0}".format(light_state_to_str[state]))
             return line_wp_idx, state
 
         #self.waypoints = None
